@@ -1,3 +1,4 @@
+#encoding=utf-8
 """
 Simple iOS tests, showing accessing elements and getting/setting text from them.
 """
@@ -20,7 +21,7 @@ class SimpleIOSTests(unittest.TestCase):
             desired_capabilities={
                 'app': app,
                 'platformName': 'iOS',
-                'platformVersion': '8.1',
+                'platformVersion': '8.0',
                 'deviceName': 'iPhone 6'
             })
 
@@ -29,7 +30,7 @@ class SimpleIOSTests(unittest.TestCase):
 
     def _populate(self):
         # populate text fields with two random numbers
-        els = self.driver.find_elements_by_ios_uiautomation('elements()')
+        els = self.driver.find_elements_by_ios_uiautomation('.elements()')
 
         self._sum = 0
         for i in range(2):
@@ -46,20 +47,23 @@ class SimpleIOSTests(unittest.TestCase):
 
         # is sum equal ?
         # sauce does not handle class name, so get fourth element
-        sum = self.driver.find_element_by_ios_uiautomation('elements()[3]').text
+        sum = self.driver.find_element_by_ios_uiautomation('.elements()[3]').text
         self.assertEqual(int(sum), self._sum)
+
 
     def test_scroll(self):
         els = self.driver.find_elements_by_class_name('UIAButton')
         els[5].click()
 
-        sleep(1)
-        el = self.driver.find_element_by_accessibility_id('OK')
-        el.click()
+        #can't find this element at all
+        # sleep(1)
+        # el = self.driver.find_element_by_accessibility_id('OK')
+        # el.click()
 
         sleep(1)
         el = self.driver.find_element_by_xpath('//UIAMapView[1]')
 
+        #拿到的是左上角坐标(x,y)
         location = el.location
         self.driver.swipe(start_x=location['x'], start_y=location['y'], end_x=0.5, end_y=location['y'], duration=800)
 

@@ -1,3 +1,11 @@
 #sample-code
 
-This repository contains sample applications which are used mostly by appium functional tests.
+This repository is forked from <https://github.com/appium/sample-code.git>
+
+Since the origin repository's exmaple for python can not be run directly with Appium(1.3.7)&Appium-Python-Client(0.14)&selenium(2.42.1), I adjust some of them to adpate to these versions.
+
+Files being adjusted:  
+*sample-code/examples/python/ios_simple.py*
+
+...  
+To be continued... 
