@@ -23,7 +23,7 @@ class ComplexIOSTests(unittest.TestCase):
     def setUp(self):
         # set up appium
         app = os.path.join(os.path.dirname(__file__),
-                           '../../apps/UICatalog/build/Release-iphonesimulator',
+                           '../../apps/UICatalog/build/Debug-iphonesimulator',
                            'UICatalog.app')
         app = os.path.abspath(app)
         self.driver = webdriver.Remote(
@@ -31,7 +31,7 @@ class ComplexIOSTests(unittest.TestCase):
             desired_capabilities={
                 'app': app,
                 'platformName': 'iOS',
-                'platformVersion': '8.1',
+                'platformVersion': '8.0',
                 'deviceName': 'iPhone 6'
             })
         self._values = []
@@ -55,7 +55,7 @@ class ComplexIOSTests(unittest.TestCase):
         self.assertEqual(18, len(rows))
 
         # is first one about buttons
-        self.assertEqual(rows[0].get_attribute("name"), "Action Sheets, AAPLActionSheetViewController")
+        self.assertEqual(rows[0].get_attribute("name"), "Action Sheets")
 
         # there is nav bar inside the app
         nav_bar = self.driver.find_element_by_class_name("UIANavigationBar")
@@ -71,8 +71,8 @@ class ComplexIOSTests(unittest.TestCase):
         self.driver.switch_to.context(contexts[1])
 
         # Find the store link
-        sleep(4) # let the page load, perhaps
-        logo = self.driver.find_element_by_id('gn-apple')
+        sleep(10) # let the page load, perhaps
+        logo = self.driver.find_element_by_xpath('//*/UIATextField[@value="http://apple.com"]')
         self.assertIsNotNone(logo)
 
         # leave the webview
@@ -80,13 +80,13 @@ class ComplexIOSTests(unittest.TestCase):
 
         # Verify we are out of the webview
         scroll_after = self.driver.find_element_by_class_name("UIAScrollView")
-        self.assertTrue(scroll_after)
+        self.assertIsNotNone(scroll_after)
 
     def test_location(self):
         # get third row location
         row = self.driver.find_elements_by_class_name("UIATableCell")[2]
         self.assertEqual(row.location['x'], 0)
-        self.assertEqual(row.location['y'], 152)
+        self.assertEqual(row.location['y'], 178.8125)
 
     def test_screenshot(self):
         # make screenshot and get is as base64
@@ -121,7 +121,7 @@ class ComplexIOSTests(unittest.TestCase):
 
     def test_alert_interaction(self):
         # go to the alerts section
-        self.driver.find_element_by_name('Alert Views, AAPLAlertViewController').click()
+        self.driver.find_element_by_name('Alert Views').click()
         triggerOk = self.driver.find_element_by_accessibility_id("Simple")
 
         # TOFIX: Looks like alert object is not proper state
@@ -137,6 +137,7 @@ class ComplexIOSTests(unittest.TestCase):
         triggerOkCancel = self.driver.find_element_by_accessibility_id("Okay / Cancel")
         triggerOkCancel.click()
         alert = self.driver.switch_to_alert()
+        print "test_alert_interaction OK"
 
         # check if title of alert is correct
         self.assertEqual(alert.text, "A Short Title Is Best A message should be a short, complete sentence.")
@@ -167,7 +168,7 @@ class ComplexIOSTests(unittest.TestCase):
         # get main view soruce
         source_main = self.driver.page_source
         self.assertIn("UIATableView", source_main)
-        self.assertIn("Text Fields, AAPLTextFieldViewController", source_main)
+        self.assertIn("Text Fields", source_main)
 
         # got to text fields section
         self._open_menu_position(13)

@@ -31,6 +31,9 @@ class SimpleIOSTests(unittest.TestCase):
     def _populate(self):
         # populate text fields with two random numbers
         els = self.driver.find_elements_by_ios_uiautomation('.elements()')
+        # gotten by name
+        #els = [self.driver.find_element_by_name('TextField1'),
+        # self.driver.find_element_by_name('TextField2')]
 
         self._sum = 0
         for i in range(2):
@@ -48,6 +51,8 @@ class SimpleIOSTests(unittest.TestCase):
         # is sum equal ?
         # sauce does not handle class name, so get fourth element
         sum = self.driver.find_element_by_ios_uiautomation('.elements()[3]').text
+        #get by name
+        #sum = self.driver.find_element_by_name('Answer').text
         self.assertEqual(int(sum), self._sum)
 
 
@@ -63,7 +68,7 @@ class SimpleIOSTests(unittest.TestCase):
         sleep(1)
         el = self.driver.find_element_by_xpath('//UIAMapView[1]')
 
-        #拿到的是左上角坐标(x,y)
+        #get the left upper corner (x,y)
         location = el.location
         self.driver.swipe(start_x=location['x'], start_y=location['y'], end_x=0.5, end_y=location['y'], duration=800)
 
